@@ -6,7 +6,7 @@ let url = 'https://ncov.moh.gov.vn/';
 
 app.get('/', async (req, res) => {
     try{
-        const browser = await puppeteer.launch({ args: ['--no-sandbox'] });
+        const browser = await puppeteer.launch({ headless: true });
         const page = await browser.newPage();
         await page.goto(url);
         
@@ -15,13 +15,13 @@ app.get('/', async (req, res) => {
             dataJSON.vietnam = {};
             dataJSON.global = {};
 
-            dataJSON.vietnam.cases = document.getElementById('VN-01').innerText;
-            dataJSON.vietnam.deaths = document.getElementById('VN-02').innerText;
-            dataJSON.vietnam.recovered = document.getElementById('VN-04').innerText;
+            dataJSON.vietnam.cases = document.getElementsByClassName('font24')[0].innerText;
+            dataJSON.vietnam.deaths = document.getElementsByClassName('font24')[3].innerText;
+            dataJSON.vietnam.recovered = document.getElementsByClassName('font24')[2].innerText;
 
-            dataJSON.global.cases = document.getElementById('QT-01').innerText.replace('.', '');
-            dataJSON.global.deaths = document.getElementById('QT-02').innerText.replace('.', '');
-            dataJSON.global.recovered = document.getElementById('QT-04').innerText.replace('.', '');
+            dataJSON.global.cases = document.getElementsByClassName('font24')[4].innerText.replace('.', '');
+            dataJSON.global.deaths = document.getElementsByClassName('font24')[7].innerText.replace('.', '');
+            dataJSON.global.recovered = document.getElementsByClassName('font24')[6].innerText.replace('.', '');
 
             return dataJSON;
         });
